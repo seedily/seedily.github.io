@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>欢迎访问</title>
+    <!-- <link rel="stylesheet" type="text/css" href="css/style.css" /> -->
+    <style>
+        *{
+            font-family: "楷体";
+        }
+		
+        html{
+            overflow-y: scroll;/* 总是显示滚动条 */
+        }
+        body {
+			background-image:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(resource/images/bg0.jpg);
+            background-size: cover;
+            background-position: center;
+        }
+
+        header{
+            height: 100vh;
+        }
+    
+        .nav-bar{
+            min-width: 500px;
+            background-color: #333;
+            border: 1px solid transparent;
+            border-radius: 20px;
+            transition: .6s ease;
+            position: absolute;
+            margin: 25px auto; 
+            left:40%;
+        }
+
+        ul{
+            display: block; 
+            margin: 15px auto; 
+            list-style-type: none;
+            align-items: center;
+        }
+        ul li{
+            display: inline-block;
+        }
+    
+        ul li a{
+            text-decoration: none;
+            color: #fff;
+            padding: 5px 20px;
+            border: 1px solid transparent;
+            transition: .6s ease;
+            border-radius: 20px;
+        }
+    
+        ul li a:hover{
+            background-color: #fff;
+            color: #000;
+        }
+        ul li.active a{
+            background-color: #fff;
+            color: #000;
+        }
+        .title{
+            position: absolute;
+            top:50%;
+            left:50%;
+            transform: translate(-50%,-50%);
+        }
+        .title h1{
+            color: #fff;
+            font-size: 70px;
+            font-family: Century Gothic;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-bar">
+            <nav>
+                <ul>
+                    <li class="active"><a href="#">首页</a></li>
+                    <li class="to-blog-btn"><a href="#">博客</a></li>
+                    <li><a href="https://www.cnblogs.com" target="_blank">博客园</a></li>
+                    <li><a href="https://blog.csdn.net" target="_blank"><span style="color: crimson;">C</span>SDN</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="title">
+            <h1><span style="color: crimson;">My</span> Homepage</h1>
+			<br>
+			<br>
+			<br>
+			<div><span style="color: white;">tech with nginx</span></div>
+        </div>
+    </header>
+	
+	<script>
+        // 初始化
+        function initialize() {
+            setRandomBackground();
+            initBlogBtn();
+        }
+        
+        // 初始化返回根目录按钮
+        function initBlogBtn() {
+            const blogBtn = document.querySelector('.to-blog-btn');
+            blogBtn.addEventListener('click',  function() {
+                window.location.href = window.location.protocol + "//" + window.location.host ;  
+            }); 
+        }
+        function setRandomBackground() {
+			// 获取当前时间的分钟数 
+			let minutes = new Date().getMinutes();  
+            // 生成图片索引 
+            let randomBgIndex = Math.floor(minutes  / 6);
+            // 设置背景图片 
+            document.body.style.backgroundImage  = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(resource/images/bg' + randomBgIndex + '.jpg)';
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundAttachment = 'fixed';
+        }
+        // 页面加载完成后调用函数 
+        window.onload  = initialize;
+    </script>
+</body>
+</html>

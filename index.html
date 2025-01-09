@@ -1,80 +1,1006 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+
+<html>
+  
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>三文鱼的主页</title>
-    <!-- <link rel="stylesheet" type="text/css" href="css/style.css" /> -->
-    <style>
-        *{
-            padding: 0;
-            margin: 0;
-            font-family: "楷体";
-        }
-        header{
-            background-image:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url(resource/images/bg.jpg);
-            height: 100vh;
-            background-size: cover;
-            background-position: center;
-        }
+  <meta charset="utf-8">
+  <meta name="description" content="HTML read markdown">
+  <meta name="viewport" content="width=256, initial-scale=1">
+  
+  <title>我的博客</title>
+  <style>
+    /* 全局 */
+    * {
+      font-family: 'Exo', sans-serif;
+      text-decoration: none;
+    }
+
+    :root {
+      background-color: #e6e6e6;
+    }
+
+    ::selection {
+      background-color: #DCEDC8;
+    }
+
     
-        ul{
-            float: right;
-            list-style-type: none;
-            margin: 15px;
+    html{
+      overflow-y: scroll;/* 总是显示滚动条 */
+    }
+    body {
+      background-color: #eee;
+      margin: 0;
+      overflow-y: hidden; 
+    }
+
+    a {
+      color: #66BB6A;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #2E7D32;
+    }
+
+    /* 背景 */
+    .background {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      z-index: -1;
+      background-color: #e6e6e6;
+    }
+
+    /* 导航栏 */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      width: min-content;
+      background-color: #616161;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1;
+    }
+
+    nav a {
+      color: #FAFAFA;
+      padding: .3rem;
+      transition:
+        color .2s,
+        background-color .2s;
+    }
+
+    nav a:hover {
+      color: #FFF;
+      background-color: #212121;
+    }
+
+    /* 动画 */
+    .Animated {
+      animation-fill-mode: both;
+      animation-duration: 1s;
+    }
+
+    .Animated-remove {
+      position: absolute;
+    }
+
+    .Animated--reverse {
+      animation-direction: reverse
+    }
+
+    .Animate--fast {
+      animation-duration: .5s
+    }
+
+    .Animate--noDelay {
+      animation-delay: 0s !important;
+    }
+
+    .Animate--slideInRight {
+      animation-name: Animation-slideInRight
+    }
+
+    @keyframes Animation-slideInRight {
+      0% {
+        transform: translateX(200%);
+      }
+
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    .Animate--slideInLeft {
+      animation-name: Animation-slideInLeft
+    }
+
+    @keyframes Animation-slideInLeft {
+      0% {
+        transform: translateX(-120%);
+      }
+
+      100% {
+        transform: translateX (0);
+      }
+    }
+
+    /* 主要内容 */
+    .markdown-body {
+      position: relative;
+      margin: 3rem auto;
+      width: 100%;
+      max-width: 960px;
+      height: 100%;
+      min-height: 960px;
+      background-color: #FAFAFA;
+      color: #212121;
+      box-sizing: border-box;
+      overflow-y: hidden;
+      box-shadow: 0 2px 6px rgba(100, 100, 100, .3);
+    }
+
+    .markdown-body .content,
+    .markdown-body .old-content {
+      margin: 2rem;
+    }
+
+    .markdown-body img,
+    .markdown-body video,
+    .markdown-body iframe,
+    .markdown-body object,
+    .markdown-body embed,
+    .markdown-body svg,
+    .markdown-body canvas,
+    .markdown-body audio {
+      max-width: 100%;
+    }
+
+    /* Markdown 样式 */
+    .markdown-body a {
+      transition:
+        color .2s,
+        background-color .2s;
+    }
+
+    .markdown-body a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .markdown-body ul,
+    .markdown-body ol {
+      padding-left: 2rem;
+    }
+
+    .markdown-body pre {
+      background-color: rgba(0, 0, 0, 0.05);
+      padding: .4rem;
+      border-radius: .1rem;
+      overflow-y: scroll;
+    }
+
+    .markdown-body code {
+      font-family: "cousine nerd font mono", monospace;
+    }
+
+    .markdown-body p code {
+      background-color: rgba(0, 0, 0, 0.05);
+      font-size: small;
+      padding: .2rem;
+      border-radius: .1rem;
+    }
+
+    .markdown-body blockquote {
+      background-color: rgba(0, 0, 0, 0.05);
+      font-size: small;
+      padding: .4rem;
+      margin: .5rem 2rem;
+      border-left: 5px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .markdown-body details {
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: .1rem;
+    }
+
+    .markdown-body summary {
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.05);
+      padding: .4rem;
+      font-weight: bold;
+    }
+
+    .markdown-body summary code {
+      cursor: text;
+    }
+
+    .markdown-body details a {
+      margin-left: -2rem;
+    }
+
+    .markdown-body table {
+      border-spacing: 0;
+      border-radius: .1rem;
+      width: 100%;
+      border-collapse: separate;
+      border: .1rem solid rgba(0, 0, 0, 0.05);
+    }
+
+    .markdown-body table td,
+    .markdown-body table th {
+      border-right: .1rem solid rgba(0, 0, 0, 0.05);
+    }
+
+    .markdown-body table td,
+    .markdown-body table th {
+      border-top: .1rem solid rgba(0, 0, 0, 0.05);
+    }
+
+    .markdown-body table td:last-child,
+    .markdown-body th:last-child {
+      border-right-color: transparent;
+    }
+
+    .markdown-body table thead tr:first-child>* {
+      border-top: .1rem solid transparent;
+    }
+
+    /* 加载进度条 */
+    .loading-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity .1s linear;
+
+      .progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 4px;
+        background-color: #2E7D32;
+        box-shadow: 0 0 10px rgba(102, 187, 106, .7);
+      }
+
+      &.loading {
+        opacity: 1;
+        transition: none;
+
+        .progress {
+          transition: width .1s ease;
         }
-        ul li{
-            display: inline-block;
-        }
-    
-        ul li a{
-            text-decoration: none;
-            color: #fff;
-            padding: 5px 20px;
-            border: 1px solid transparent;
-            transition: .6s ease;
-            border-radius: 20px;
-        }
-    
-        ul li a:hover{
-            background-color: #fff;
-            color: #000;
-        }
-        ul li.active a{
-            background-color: #fff;
-            color: #000;
-        }
-        .title{
-            position: absolute;
-            top:50%;
-            left:50%;
-            transform: translate(-50%,-50%);
-        }
-        .title h1{
-            color: #fff;
-            font-size: 70px;
-            font-family: Century Gothic;
-        }
-    </style>
+      }
+    }
+
+    /* 翻译按钮相关 */
+    .translateSelectLanguage {
+      background-color: #616161;
+      color: inherit;
+      z-index: 3;
+      width: 17%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      left: 50%;
+    }
+
+    /* 深色模式相关 */
+    .darkmode--activated .markdown-body img,
+    .darkmode--activated .markdown-body svg {
+      isolation: isolate;
+      mix-blend-mode: difference
+    }
+
+    .darkmode-layer,
+    .darkmode-toggle {
+      z-index: 3
+    }
+
+    /* 小屏响应式优化 */
+    @media only screen and (max-width: 960px) {
+
+      html{
+        overflow-y: scroll; /* 总是显示滚动条 */
+      }
+      body {
+        margin: 0;
+        overflow-y: hidden; 
+      }
+      
+      .markdown-body {
+        position: relative;
+        margin: 3rem auto;
+        height: 100%;
+        min-height: 960px;
+        overflow-y: hidden;
+        min-width: 256px;
+        top: 0;
+        margin: 0 0;
+      }
+
+      .markdown-body .content,
+      .markdown-body .old-content {
+        margin: 2rem;
+      }
+
+      .markdown-body table {
+        overflow-x: scroll;
+        min-width: 560px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <header>
-        <div class="main">
-            <ul>
-                <li class="active"><a href="index">首页</a></li>
-                <li class="active"><a href="blog">博客</a></li>
-                <li class="active"><a href="about">关于</a></li>
-                <li><a href="https://www.cnblogs.com/yu007" target="_blank">cnblog</a></li>
-            </ul>
-        </div>
-        <div class="title">
-            <h1><span style="color: crimson;">My</span> Homepage</h1>
-			<br>
-			<br>
-			<br>
-			<div><span style="color: white;">tech with github</span></div>
-        </div>
-    </header>
+  <!-- 导航栏 -->
+  <nav>
+    <a title="博客主页" class="to-home">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-home">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+        <path d="M12 9h.01" />
+        <path d="M11 12h1v4h1" />
+      </svg>
+    </a>
+    <a title="关于博主" class="about-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-info-circle">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <polygon points="3,21 18,21 14,15 6,15" fill="none"/>
+        <circle cx="10" cy="10" r="5" fill="none" /> 
+      </svg>
+    </a>
+    <a title="跳转到欢迎页" class="to-welcome-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-home">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+        <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+        <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+      </svg>
+    </a>
+    <a title="更改语言" id="translate">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-language">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12,3 L12,21"/>
+        <path d="M5,8 L5,16"/>
+        <path d="M5,8 L19,8"/>
+        <path d="M19,8 L19,16"/>
+        <path d="M5,16 L19,16"/>
+      </svg>
+    </a>
+    <a title="切换主题背景" class="dark-btn" href="javascript:;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-brightness">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+        <path d="M12 3l0 18" />
+        <path d="M12 9l4.65 -4.65" />
+        <path d="M12 14.3l7.37 -7.37" />
+        <path d="M12 19.6l8.85 -8.85" />
+      </svg>
+    </a>
+    <a title="刷新" class="refresh-btn" href="">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-refresh">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
+        <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
+      </svg>
+    </a>
+    <a title="返回上一页" class="back-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-back">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M9 11l-4 4l4 4m-4 -4h11a4 4 0 0 0 0 -8h-1" />
+      </svg>
+    </a>
+  </nav>
+  
+  <!-- 内容主体 -->
+  <div class="markdown-body">
+    <div class="content">
+    </div>
+  </div>
+
+  <!-- 加载动画 -->
+  <div class="loading-bar">
+    <div class="progress"></div>
+  </div>
+
+  <div class="background"></div>
+  
+  <!-- 加载js -->
+  <!-- <script defer src="http://lib.baomitu.com/marked/4.0.2/marked.min.js" type="text/javascript"></script>
+  <script src="http://lib.baomitu.com/pjax/0.2.8/pjax.min.js" type="text/javascript"></script>
+  <script src="http://lib.baomitu.com/translate.js/3.7.2/translate.js" type="text/javascript"></script>
+  <script src="http://lib.baomitu.com/Darkmode.js/1.5.7/darkmode-js.min.js" type="text/javascript"></script> -->
+  <script defer src="resource/js/marked.min.js" type="text/javascript"></script>
+  <script src="resource/js/pjax.min.js" type="text/javascript"></script>
+  <script src="resource/js/translate.js" type="text/javascript"></script>
+  <script src="resource/js/darkmode-js.min.js" type="text/javascript"></script>
+  <script src="resource/js/instantpage.min.js" type="text/javascript"></script>
+  <script>
+    // 使用 IIFE 包裹以避免全局变量污染
+    (function () {
+
+      // 加载动画相关
+      var loadingState = {
+        countLoading: 0
+      };
+      Object.defineProperty(loadingState, 'countLoading', {
+        get: function () {
+          return this._countLoading;
+        },
+        set: function (newValue) {
+          if (newValue < 0) {
+            newValue = 0;
+          }
+          const loadingBar = document.querySelector('.loading-bar');
+          const progress = document.querySelector('.loading-bar .progress');
+          if (this.countLoading === 0 && newValue > 0) {
+            var loadingBarWidth = 20;
+            var MAX_LOADING_WIDTH = 95;
+
+            loadingBar.classList.add('loading');
+            progress.style.width = loadingBarWidth + '%';
+
+            clearInterval(timer);
+            timer = setInterval(function () {
+              loadingBarWidth += 3;
+
+              if (loadingBarWidth > MAX_LOADING_WIDTH) {
+                loadingBarWidth = MAX_LOADING_WIDTH;
+              }
+
+              progress.style.width = loadingBarWidth + '%';
+            }, 500);
+          } else if (this.countLoading > 0 && newValue === 0) {
+            clearInterval(timer);
+            progress.style.width = '100%';
+            loadingBar.classList.remove('loading');
+
+            setTimeout(function () {
+              progress.style.width = 0;
+            }, 400);
+          }
+          this._countLoading = newValue;
+        }
+      });
+      loadingState.countLoading = 0;
+      function startLoad() {
+        loadingState.countLoading = loadingState.countLoading + 1;
+      }
+      function endLoad() {
+        loadingState.countLoading = loadingState.countLoading - 1;
+      }
+      var timer = null;
+
+      // 文档解析功能相关
+      var notExistIndexPage = null;  // 是否不存在索引页
+      async function getPValue() {
+        return await decodeMDPath(window.location.href);
+      }
+
+      // PJAX 相关
+      let PJAX;
+
+      // 深色模式相关
+      let darkmode;
+
+      // 自定义 PJAX 相关
+      const existPushState = (history && history.pushState);
+      var level = 1;  // 当前页面的层级
+      var lastLevel = 0;
+
+      // 初始化 PJAX
+      function initPJAX() {
+        try {
+          const Pjax = window.Pjax || function () {
+            console.warn('Pjax 不存在？');
+          };
+          PJAX = new Pjax({
+            selectors: [
+              'head title',
+              '.markdown-body',
+              '.pjax-reload'
+            ],
+            switches: {
+              ".markdown-body": Pjax.switches.sideBySide
+            },
+            switchesOptions: {
+              ".markdown-body": {
+                classNames: {
+                  remove: "Animated Animated--reverse Animate--fast Animate--noDelay",
+                  add: "Animated",
+                  backward: "Animate--slideInRight",
+                  forward: "Animate--slideInLeft"
+                }
+              }
+            },
+            cacheBust: false
+          });
+        } catch (e) {
+          console.error('PJAX 初始化出错：' + e);
+        }
+      }
+
+      // Darkmode.js 深色模式
+      function initDarkmode() {
+        try {
+          const Darkmode = window.Darkmode || function () {
+            console.warn('Darkmode.js 不存在？');
+          };
+          darkmode = new Darkmode();
+        } catch (e) {
+          console.error('初始化 Darkmode.js 出错：' + e);
+        }
+      }
+
+      // translate-js 翻译系统
+      //// 初始化翻译系统
+      function initTranslate() {
+        try {
+          translate.service.use('client.edge');
+          translate.request.listener.start();
+          translate.setAutoDiscriminateLocalLanguage();
+          translate.language.setUrlParamControl();
+          translate.ignore.class.push('notTranslate');
+          translate.execute();
+        } catch (e) {
+          console.error('翻译系统出错：' + e);
+        }
+      }
+
+      //// 检查并提示翻译
+      function infoTranslate() {
+        try {
+          const currentLang = translate.language.getCurrent();
+          const originalLang = translate.language.getLocal();
+          if (currentLang !== originalLang) {
+            const translateInfo = document.querySelectorAll('.translate-info');
+            if (translateInfo) {
+              translateInfo.forEach(function (item) {
+                item.remove();
+              })
+            }
+            // 获取 .markdown-body 元素
+            var bq = document.createElement('blockquote');
+            bq.classList.add('translate-info');
+
+            var infoBody = document.createElement('p');
+            infoBody.innerText = '当前页面已翻译。您可以：';
+            var msgBody = document.createElement('p');
+
+            var switchButton = document.createElement('a');
+            switchButton.classList.add('translate-switch');
+            switchButton.href = 'javascript:;';
+            switchButton.title = '切换到原语言';
+            switchButton.innerText = '切换到文章原本的语言';
+
+            bq.appendChild(infoBody);
+            bq.appendChild(switchButton);
+
+            const mainElement = document.querySelector('.markdown-body .content');
+            mainElement.insertBefore(bq, mainElement.children[1]);
+          }
+        } catch (e) {
+          console.error('检查并提示翻译出错：' + e);
+        }
+      }
+
+      //// 刷新翻译
+      function refreshTranslate() {
+        try {
+          translate.selectLanguageTag.refreshRender();
+        } catch (e) {
+          console.error('刷新翻译出错：' + e);
+        }
+      }
+
+      // 获取文件所在目录
+      function getDirectory(path) {
+        path = new URL(path, 'http://example.com').pathname;
+        const lastSlashIndex = path.lastIndexOf('/');
+        return path.substring(0, lastSlashIndex + 1);
+      }
+
+      // 获取 当前所加载的 md 文件的所在路径
+      function getPath() {
+        return getDirectory(window.location.href);
+      }
+
+      // 将 ?p= 后面的值转换为绝对路径
+      /* 
+        输出的值是 /path/to/file.md
+        当其为 null 时，根据是否存在 blog.md 文件来决定返回的值
+       */
+      async function decodeMDPath(path) {
+        const url = new URL(path);
+        const params = new URLSearchParams(url.search);
+        path = formatMDPath(params.get('p'));
+        return path;
+      }
+
+      // 格式化路径
+      /* 
+        如果 mdPath 为 null，则返回 null，如果 mdPath 是路径，则返回该路径下 /blog.md
+        return: 返回格式化后的文件路径，一定是绝对路径，或者 null
+       */
+      function formatMDPath(mdPath) {
+        if (mdPath) {
+          if (isRelativePath(mdPath)) {
+            mdPath = getPath() + mdPath;
+          }
+          mdPath = new URL(mdPath, 'http://example.com').pathname;
+          if (!mdPath.endsWith('.md')) {
+            if (!mdPath.endsWith('/')) {
+              mdPath += '/';
+            }
+            mdPath += 'blog.md';
+          }
+        }
+        return mdPath;
+      }
+
+      // 判断路径是否为相对路径
+      const isRelativePath = (path) => !path.startsWith('/');
+
+      // 处理错误
+      function updateContent(article, title = null, mdPath = null) {
+        try {
+          document.querySelector('.markdown-body').innerHTML = `<div class="old-content Animated Animated-remove Animated--reverse Animate--fast Animate--noDelay Animate--slideInLeft">${document.querySelector('.markdown-body .content').innerHTML}</div><div class="content Animated Animate--slideInRight">${article}</div>`;
+          firstH1 = document.querySelector('.markdown-body .content h1');
+          document.title = title ? title : (firstH1 ? firstH1.textContent : mdPath);
+        } catch (error) {
+          throw error;
+        }
+      }
+
+      // 等待动画结束
+      function waitForAnimationsEnd(parentElement, selector, animationNames) {
+        return new Promise(resolve => {
+          var completedCount = 0;
+          const elements = parentElement.querySelectorAll(selector);
+          const totalElements = elements.length;
+
+          const handleAnimationEnd = function (event) {
+            if (animationNames.includes(event.animationName) && Array.from(elements).includes(event.target)) {
+              completedCount++;
+              if (completedCount === totalElements) {
+                parentElement.removeEventListener('animationend', handleAnimationEnd);
+                resolve();
+              }
+            }
+          };
+
+          parentElement.addEventListener('animationend', handleAnimationEnd);
+        });
+      }
+
+      // 处理错误
+      function handleError(mdPath, errorMessage) {
+        updateContent(`<h1>加载失败</h1><p>加载文档<code>${mdPath}</code>时出错：<code>${errorMessage}</code>。您可以尝试<a class="refresh-btn" href="">重新加载</a>或<a class="back-btn">返回</a>。</p>`, '加载失败');
+        customPushState(window.location.origin + window.location.pathname + '?p=error.md');
+        waitForAnimationsEnd(document.querySelector('.markdown-body'), '.content, .old-content', ['Animation-slideInRight', 'Animation-slideInLeft']).then(() => {
+          customPushState(window.location.origin + window.location.pathname + (mdPath ? ('?p=' + mdPath) : ''));
+        });
+        endLoad();
+      }
+
+      // 更新页面的 markdown 内容
+      /* 
+        mdPath: 要加载的 markdown 文件路径，最好是带主机名的绝对路径（要用于 fetch()）
+        response: fetch() 的返回值，用于防止二次访问
+       */
+      const showMarkdown = async (mdPath, response = null) => {
+        if (mdPath === null) {
+          var path = null;
+          const currentPath = getPath();
+          // 如果存在 blog.md 文件，则返回 blog.md，否则返回 README.md
+          if (notExistIndexPage) {
+            path = currentPath + 'md/blog.md';
+          } else if (notExistIndexPage === false) {
+            path = currentPath + 'md/blog.md';
+          } else {
+            response = await fetch(getPath() + 'blog.md');
+            if (response.ok && response.headers.get('content-type').startsWith('text/markdown')) {
+              notExistIndexPage = false;
+              path = currentPath + 'md/blog.md';
+            } else {
+              response = null;
+              notExistIndexPage = true;
+              path = currentPath + 'md/blog.md';
+            }
+          }
+        }
+        try {
+          updateContent(await getMarkdown((mdPath ? mdPath : path), response))
+          document.querySelector('html').classList.add('loaded');	//// 防止缓存的页面被自定义 PJAX 中覆写的处理响应的函数捕获
+          waitForAnimationsEnd(document.querySelector('.markdown-body'), '.content, .old-content', ['Animation-slideInRight', 'Animation-slideInLeft']).then(async () => {
+            await showMarkdownEnded();
+            customPushState(window.location.origin + window.location.pathname + (mdPath ? ('?p=' + mdPath) : ''));
+          });
+        } catch (error) {
+          handleError((mdPath ? mdPath : path), error)
+        }
+      }
+
+      // 读取并解析指定文件
+      const getMarkdown = async (mdPath, response = null) => {
+        // 生成目录
+        function generateOutline(doc) {
+          const headings = Array.from(doc.querySelectorAll('h1, h2, h3, h4, h5, h6'));
+          if (headings.length === 0) return '<i>无目录</i>';
+          var outline = '<ul>';
+          var stack = [];
+
+          headings.forEach(heading => {
+            const level = parseInt(heading.tagName.charAt(1));
+            const id = heading.textContent.toLowerCase()
+              .replace(/ /g, '-') // 将空格替换为连字符
+              .replace(/[^\w\u4e00-\u9fa5-]/g, ''); // 保留字母、数字、下划线、中文字符和连字符
+
+            // 设置 id 属性以便链接跳转
+            heading.setAttribute('id', id);
+
+            while (stack.length > 0 && stack[stack.length - 1].level >= level) {
+              stack.pop();
+              outline += '</ul></li>';
+            }
+
+            if (stack.length === 0 || stack[stack.length - 1].level < level) {
+              outline += '<li><ul>';
+            } else {
+              outline += '</li><li>';
+            }
+
+            outline += `<a href="#${id}">${heading.textContent}</a>`;
+            stack.push({ level: level });
+          });
+
+          while (stack.length > 0) {
+            outline += '</ul></li>';
+            stack.pop();
+          }
+
+          outline += '</ul>';
+          return outline;
+        }
+
+        if (!response) {
+          response = await fetch(mdPath);
+          if (!response.ok && response.headers.get('content-type').startsWith('text/markdown')) {
+            throw new Error('请求失败：' + mdPath + '，' + response.headers.get('content-type') + '，' + response.status + '，' + response.statusText);
+          }
+        }
+        var content = marked.parse(await response.text());
+        if (content === '') {
+          content = '<i>空文件</i>';
+        }
+        content = `<details class="outline"><summary><code>${decodeURIComponent(mdPath)}</code></summary></details><hr>${content}`;
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(content, 'text/html');
+
+        const outline = generateOutline(doc);
+        doc.querySelector('.outline').innerHTML += outline;
+
+        const links = doc.querySelectorAll('a[href$=".md"]');
+        const pValue = await getPValue()
+        links.forEach(link => {
+          var href = link.getAttribute('href');
+          /* 
+            如果 href 是相对路径，则在其前加上当前读取的文档的绝对路径；
+            如果不存在当前读取的文档（默认读取的 blog.md 或 README.md），
+            则在其前加上 绝对路径。
+           */
+          if (isRelativePath(href)) {
+            if (pValue) {
+              href = getDirectory(mdPath) + href;
+            } else {
+              href = getPath() + href;
+            }
+            const absoluteHref = new URL(href, 'http://example.com').pathname;
+            link.setAttribute('href', `${window.location.pathname}?p=${absoluteHref}`);
+          } else if (href.startsWith('/')) {
+            link.setAttribute('href', `${window.location.pathname}?p=${href}`);
+          }
+        });
+        return doc.body.innerHTML;
+      };
+
+      // 初始化自定义 PJAX 响应
+      function initCustomPJAXResponse() {
+        // 覆写 PJAX 处理响应的函数，在内容插入页面之前实现 markdown 的渲染
+        PJAX._handleResponse = PJAX.handleResponse;
+        PJAX.handleResponse = async function (responseText, request, href, options) {
+          if (request.responseText.startsWith('<!doctype html><html><markdown-html') || request.responseText.startsWith(`<!doctype html>
+<html>
+<markdown-html`)) {
+            await showMarkdown(await decodeMDPath(href));
+          } else {
+            PJAX._handleResponse(responseText, request, href, options);
+          }
+        }
+      }
+
+      // 初始化自定义 PJAX 事件监听器
+      function initCustomPJAXEventListener() {
+        // 监听自定义链接的点击事件
+        if (existPushState) {
+          document.querySelector('.markdown-body').addEventListener('click', async function (event) {
+            const link = event.target.closest('a[href$=".md"]');
+            if (link) {
+              try {
+                event.preventDefault();
+                startLoad();
+                await showMarkdown(await decodeMDPath(link.href));
+              } catch (e) {
+                console.error('自定义 PJAX 出错：' + e);
+              }
+            }
+          });
+        }
+      }
+
+      // 自定义推送状态
+      function customPushState(url = window.location.href) {
+        if (existPushState) {
+          if (level > lastLevel) {
+            history.pushState({ url: url, title: document.title, uid: level }, null, url);
+            lastLevel = level++;
+          } else {
+            lastLevel = level - 1;
+          }
+        }
+      }
+
+      // 初始化内容
+      const initContent = async () => {
+        try {
+          await showMarkdown(await getPValue());
+        } catch (error) {
+          handleError(await getPValue(), '初始化内容时出错：' + error);
+        }
+      };
+      
+      // 初始化返回根目录按钮
+      function initWelcomeBtn() {
+        const rootHomeBtn = document.querySelector('.to-welcome-btn');
+        rootHomeBtn.addEventListener('click',  function() {
+          window.location.href = window.location.protocol + "//" + window.location.host + "/welcome.html";  
+        }); 
+      }
+
+      // 初始化返回首页按钮
+      function initHomeBtn() {
+        const homeBtn = document.querySelector('.to-home');
+        homeBtn.href = window.location.pathname;
+      }
+
+      // 初始化关于按钮
+      function initAboutBtn() {
+        const aboutBtn = document.querySelector('.about-btn');
+        const currentPath = getPath();
+        path = currentPath + 'md/about.md';
+        aboutBtn.href = `?p=${path}`;
+      }
+
+      // 初始化
+      function initialize() {
+        initWelcomeBtn();	//// 初始化返回首页按钮
+        initHomeBtn();	//// 初始化返回首页按钮
+        initAboutBtn();	//// 初始化关于按钮
+        initDarkmode();	//// 初始化深色模式
+        initTranslate();	//// 初始化页面翻译
+        initContent();	//// 初始化内容
+        initPJAX();	//// 初始化 PJAX
+        initCustomPJAXResponse();	//// 初始化自定义 PJAX 响应
+        initCustomPJAXEventListener();	//// 初始化自定义 PJAX 事件监听器
+      }
+
+      // 触发器
+      //// 网页加载完毕后触发初始化
+      window.addEventListener('DOMContentLoaded', function() {
+        initialize();
+        // 获取当前时间的分钟数 
+        let minutes = new Date().getMinutes();
+        // 生成图片索引 
+        let randomBgIndex = Math.floor(minutes  / 6);
+        // 设置背景图片 
+        document.body.style.backgroundImage  = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(resource/images/bg' + randomBgIndex + '.jpg)';
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundAttachment = 'fixed';
+      });
+
+      //// 翻译执行完成后触发
+      translate.listener.renderTaskFinish = function (_task) {
+        endLoad();
+      }
+      //// PJAX 开始时执行的函数
+      document.addEventListener('pjax:send', function () {
+        startLoad();
+      });
+      //// 监听 PJAX 完成后，重新加载
+      document.addEventListener('pjax:complete', async function () {
+        await showMarkdown(await getPValue());
+        initCustomPJAXEventListener();	//// 重新初始化自定义 PJAX 事件监听器
+      });
+      //// 监听 animationend 事件
+      document.addEventListener('animationend', function handleAnimationEnd(event) {
+        if (event.animationName === 'Animation-slideInRight') {
+          const element = document.querySelector('.markdown-body .content');
+          element.classList.remove('Animated');
+          element.classList.remove('Animate--slideInRight');
+        } else if (event.animationName === 'Animation-slideInLeft') {
+          document.querySelector('.markdown-body .old-content').remove();
+        }
+      });
+      //// 点击事件委托
+      document.addEventListener('click', function (event) {
+        if (event.target.closest('.back-btn')) {
+          window.history.back();
+        } else if (event.target.closest('.refresh-btn')) {
+          window.location.reload();
+        } else if (event.target.closest('.dark-btn')) {
+          darkmode.toggle();
+        } else if (event.target.closest('.translate-switch')) {
+          translate.changeLanguage(translate.language.getLocal());
+        } else if (event.target.closest('a[href^="#"]')) {
+          // 目录平滑移动
+          const href = event.target.getAttribute('href');
+          if (href !== '#') {
+            event.preventDefault();
+            const targetElement = document.querySelector(href);
+            if (targetElement) {
+              targetElement.scrollIntoView({
+                behavior: 'smooth'
+              });
+            } else {
+              console.error(`ID 为 ${targetId} 的元素不存在。`);
+            }
+          }
+        }
+      });
+      //// 文档内容加载完毕时触发
+      async function showMarkdownEnded() {
+        refreshTranslate();
+        infoTranslate();	//// 检查并提示翻译
+        translate.execute();	//// 手动触发翻译，但是理论上 translate-js 会监听页面变化
+        endLoad();
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+      //// 浏览器返回时触发
+      window.onpopstate = function (event) {
+        if (level > 1) {
+          --level;
+        }
+      };
+    })();
+
+  </script>
+
 </body>
+
 </html>
