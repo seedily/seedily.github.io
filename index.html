@@ -921,6 +921,10 @@
       //// 网页加载完毕后触发初始化
       window.addEventListener('DOMContentLoaded', function() {
         initialize();
+        if(darkmode.isActivated()) {
+          // 通过 isActivated() 方法检测深色模式是否激活，若是则扭转
+          darkmode.toggle();
+        }
         // 获取当前时间的分钟数 
         let minutes = new Date().getMinutes();
         // 生成图片索引 
@@ -929,6 +933,7 @@
         document.body.style.backgroundImage  = 'linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(resource/images/bg' + randomBgIndex + '.jpg)';
         document.body.style.backgroundSize = 'cover';
         document.body.style.backgroundAttachment = 'fixed';
+        document.body.style.mixBlendMode="normal";
       });
 
       //// 翻译执行完成后触发
@@ -962,6 +967,10 @@
           window.location.reload();
         } else if (event.target.closest('.dark-btn')) {
           darkmode.toggle();
+          if(darkmode.isActivated()) {
+            // 通过 isActivated() 方法检测深色模式是否激活，若是调整背景色，避免原背景图反相反色
+            document.body.style.background = "#ccc";  
+          } 
         } else if (event.target.closest('.translate-switch')) {
           translate.changeLanguage(translate.language.getLocal());
         } else if (event.target.closest('a[href^="#"]')) {
