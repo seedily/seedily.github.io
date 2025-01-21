@@ -344,7 +344,7 @@
   <!-- 导航栏 -->
   <nav>
     <a title="博客主页" class="to-home">
-      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24" fill="none"
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 30 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
         class="icon icon-tabler icons-tabler-outline icon-tabler-home">
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -354,7 +354,7 @@
       </svg>
     </a>
     <a title="关于博主" class="about-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24" fill="none"
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 30 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
         class="icon icon-tabler icons-tabler-outline icon-tabler-info-circle">
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -363,7 +363,7 @@
       </svg>
     </a>
     <a title="跳转到欢迎页" class="to-welcome-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24" fill="none"
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 30 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
         class="icon icon-tabler icons-tabler-outline icon-tabler-home">
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -373,11 +373,11 @@
       </svg>
     </a>
     <a title="更改语言" id="translate">
-      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24" fill="none"
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 30 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
         class="icon icon-tabler icons-tabler-outline icon-tabler-language">
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M12,3 L12,21"/>
+        <path d="M12,3 L12,22"/>
         <path d="M5,8 L5,16"/>
         <path d="M5,8 L19,8"/>
         <path d="M19,8 L19,16"/>
@@ -385,7 +385,7 @@
       </svg>
     </a>
     <a title="切换主题背景" class="dark-btn" href="javascript:;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24" fill="none"
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 30 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
         class="icon icon-tabler icons-tabler-outline icon-tabler-brightness">
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -397,7 +397,7 @@
       </svg>
     </a>
     <a title="刷新" class="refresh-btn" href="">
-      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24" fill="none"
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 30 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
         class="icon icon-tabler icons-tabler-outline icon-tabler-refresh">
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -406,7 +406,7 @@
       </svg>
     </a>
     <a title="返回上一页" class="back-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 24 24" fill="none"
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 30 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
         class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-back">
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -629,10 +629,6 @@
       }
 
       // 将 ?p= 后面的值转换为绝对路径
-      /* 
-        输出的值是 /path/to/file.md
-        当其为 null 时，根据是否存在 blog.md 文件来决定返回的值
-       */
       async function decodeMDPath(path) {
         const url = new URL(path);
         const params = new URLSearchParams(url.search);
@@ -655,7 +651,7 @@
             if (!mdPath.endsWith('/')) {
               mdPath += '/';
             }
-            mdPath += 'blog.md';
+            mdPath += 'blog-list.md';
           }
         }
         return mdPath;
@@ -716,19 +712,17 @@
           var path = null;
           const currentPath = getPath();
           // 如果存在 blog.md 文件，则返回 blog.md，否则返回 README.md
-          if (notExistIndexPage) {
-            path = currentPath + 'md/blog.md';
-          } else if (notExistIndexPage === false) {
-            path = currentPath + 'md/blog.md';
+          if (notExistIndexPage || notExistIndexPage === false) {
+            path = currentPath + 'md/blog-list.md';
           } else {
-            response = await fetch(getPath() + 'blog.md');
+            response = await fetch(currentPath + 'md/blog-list.md');
             if (response.ok && response.headers.get('content-type').startsWith('text/markdown')) {
               notExistIndexPage = false;
-              path = currentPath + 'md/blog.md';
+              path = currentPath + 'md/blog-list.md';
             } else {
               response = null;
               notExistIndexPage = true;
-              path = currentPath + 'md/blog.md';
+              path = currentPath + 'md/blog-list.md';
             }
           }
         }
